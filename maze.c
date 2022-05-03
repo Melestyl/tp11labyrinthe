@@ -131,9 +131,68 @@ main(void) {  /////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	printf("\n quel sera le nombre de colonnes de votre labyrinthe ? ");
 	scanf("%d", &NC);
 	maze_t *m = compartmentalized_maze(NL, NC);
-	print_mazePLEIN(m);
+	//print_mazePLEIN(m);
 
+	/* printf("Nb colonnes %d\n", m->col);
+	printf("Nb lignes %d\n", m->row);
+	/* m->cells[1].valeur = 1; */
+	printf("M valeur truc biduel%d\n", m->cells[3].QuatreVoisins[1]);
 
+	int nbVoisins, posTab;
+	for(int i=0; i < m->col * m->row; i++){
+		nbVoisins = 0;
+		posTab = 0;
+		//On cherche si il y a une case à gauche
+		if (!(m->cells[i].valeur % m->col == 0)){
+			nbVoisins++; //Il y a donc un voisin à gauche
+			posTab++;
+			m->cells[i].QuatreVoisins[posTab] = m->cells[i-1].valeur;
+		}
+
+		//On cherche si il y a une case à droite
+		if (!(m->cells[i].valeur % m->col == m->col -1)){
+			nbVoisins++; //Il y a donc un voisin à gauche
+			posTab++;
+			m->cells[i].QuatreVoisins[posTab] = m->cells[i+1].valeur;
+		}
+
+		//On cherche si il y a une case au dessus
+		if (!(m->cells[i].valeur / m->col < 1)){
+			nbVoisins++;
+			posTab++;
+			m->cells[i].QuatreVoisins[posTab] = m->cells[i%m->col].valeur;
+		}
+
+		//On cherche si il y a une case au dessous
+		if (m->cells[i].valeur + m->row < m->row * m->col){
+			nbVoisins++;
+			posTab++;
+			m->cells[i].QuatreVoisins[posTab] = m->cells[i+m->col].valeur;
+		}
+
+		m->cells[i].nbDirections = nbVoisins;
+	}
+
+	for(int i=0; i < m->col * m->row; i++){
+		if(i%5 == 0 && i!=0)
+			printf("|\n");
+		printf("| %02d ", i);
+	}
+	printf("|\n\n");
+
+	for(int i=0; i < m->col * m->row; i++){
+		if(i%5 == 0 && i!=0)
+			printf("|\n");
+		printf("| %d ", m->cells[i].nbDirections);
+	}
+	printf("|\n");
+
+	for(int i=0; i < m->col * m->row; i++){
+		for(int y=0; y < m->cells->nbDirections){
+			printf("%d : [%d]\n", i, m->cells->QuatreVoisins[y]);
+		}
+	}
+	
 	free_maze(m);
 
 	return 0;
